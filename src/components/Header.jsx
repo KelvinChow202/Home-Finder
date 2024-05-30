@@ -21,18 +21,18 @@ export default function Header() {
                 </div>
                 <div>
                     <ul className='flex space-x-10'>
-                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-2 border-b-transparent
-                                       ${isRouteMatch('/') && 'text-black border-b-red-500'}`}
+                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-2 
+                                       ${isRouteMatch('/') ? 'text-black border-b-red-500': 'border-b-transparent'}`}
                             onClick={() => navigate('/')}>
                             Home
                         </li>
-                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-2 border-b-transparent
-                                       ${isRouteMatch('/offers') && 'text-black border-b-red-500'}`}
+                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-2 
+                                       ${isRouteMatch('/offers') ? 'text-black border-b-red-500': 'border-b-transparent'}`}
                             onClick={() => navigate('/offers')}>
                             Offers
                         </li>
-                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-2 border-b-transparent
-                                       ${isRouteMatch('/sign-in') && 'text-black border-b-red-500'}`}
+                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-2 
+                                       ${isRouteMatch('/sign-in') ? 'text-black border-b-red-500': 'border-b-transparent'}`}
                             onClick={() => navigate('/sign-in')}>
                             Sign in
                         </li>
