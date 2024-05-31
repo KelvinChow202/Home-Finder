@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import OAuth from '../components/OAuth'
+import { toast } from 'react-toastify';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 
 export default function SignIn() {
 
@@ -10,12 +12,29 @@ export default function SignIn() {
   })
   
   const { email, password } = formData
+  const auth = getAuth()
+  const navigate = useNavigate()
 
   function onChangeFormData(e) {
     setFormData(prevFormData => ({
       ...prevFormData,
-      [e.target.id]: [e.target.value]
+      [e.target.id]: e.target.value
     }))
+  }
+
+  async function onFormDataSubmit(e){
+    e.preventDefault()
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth,email,password)
+      const user = userCredential.user
+      navigate('/')
+      toast.success(`Hi ${user.displayName}`)
+    } catch (error) {
+      console.log(error);
+      const errorCode = error.code;
+      console.log('error嘅code：', errorCode); // auth/missing-email 
+      toast.error(`Soemthing went wrong: ${errorCode.replace("auth/", "")}`)
+    }
   }
 
   return (
@@ -27,7 +46,7 @@ export default function SignIn() {
             alt='key' className='w-full rounded-2xl' />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form className='mb-6'>
+          <form onSubmit={onFormDataSubmit} className='mb-6'>
             <input
               type='email'
               id='email'

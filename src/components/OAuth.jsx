@@ -33,7 +33,7 @@ export default function OAuth() {
         } catch (error) {
             const errorCode = error.code;
             if(errorCode === 'auth/popup-closed-by-user') return;
-            toast.error(`Soemthing went wrong with the registration: ${errorCode.replace("auth/", "")}`, { autoClose: 2000 })
+            toast.error(`Soemthing went wrong with the registration: ${errorCode.replace("auth/", "")}`)
         }
     }
 

@@ -39,15 +39,15 @@ export default function SignUp() {
       formDataCopy['timestamp'] = serverTimestamp()
       // 將 user 放入數據庫
       await setDoc(doc(db, 'users', user.uid), formDataCopy)
-      toast.success(`Hi ${fullName}`, {autoClose: 1000})
       navigate('/')
+      toast.success(`Hi ${fullName}`)
     } catch (error) {
       console.log(error);
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log('error嘅code：', errorCode); // auth/missing-email 
       console.log('error嘅message：', errorMessage); // Firebase: Error (auth/missing-email)
-      toast.error(`Soemthing went wrong with the registration: ${errorCode.replace("auth/", "")}`, { autoClose: 2000 })
+      toast.error(`Soemthing went wrong with the registration: ${errorCode.replace("auth/", "")}`)
     }
 
   }
