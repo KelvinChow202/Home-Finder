@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import OAuth from '../components/OAuth'
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
+import { db } from '../firebase'
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
 
@@ -9,13 +13,43 @@ export default function SignUp() {
     email: '',
     password: ''
   })
-  const { email, password, fullName } = formData
+  const { fullName, email, password } = formData
+
+  const auth = getAuth()
+  const navigate = useNavigate()
 
   function onChangeFormData(e) {
     setFormData(prevFormData => ({
       ...prevFormData,
-      [e.target.id]: [e.target.value]
+      [e.target.id]: e.target.value
     }))
+  }
+
+  async function onSubmitFormData(e) {
+    e.preventDefault()
+    // Register 一個新 account
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const user = userCredential.user;
+      // displayName 預設為 null，因為 displayName 並不是在註冊時必須提供的屬性
+      // 如果想要在註冊時設置 displayName，需要在註冊成功後，使用 updateProfile 方法來更新用戶配置文件
+      await updateProfile(user, { displayName: fullName })
+      const formDataCopy = { ...formData }
+      delete formDataCopy.password
+      formDataCopy['timestamp'] = serverTimestamp()
+      // 將 user 放入數據庫
+      await setDoc(doc(db, 'users', user.uid), formDataCopy)
+      toast.success(`Hi ${fullName}`, {autoClose: 1000})
+      navigate('/')
+    } catch (error) {
+      console.log(error);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('error嘅code：', errorCode); // auth/missing-email 
+      console.log('error嘅message：', errorMessage); // Firebase: Error (auth/missing-email)
+      toast.error(`Soemthing went wrong with the registration: ${errorCode.replace("auth/", "")}`, { autoClose: 2000 })
+    }
+
   }
 
   return (
@@ -27,8 +61,8 @@ export default function SignUp() {
             alt='key' className='w-full rounded-2xl' />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form className='mb-6'>
-          <input
+          <form onSubmit={onSubmitFormData} className='mb-6'>
+            <input
               type='text'
               id='fullName'
               value={fullName}
