@@ -36,6 +36,12 @@ export default function Header() {
                             onClick={() => navigate('/sign-in')}>
                             Sign in
                         </li>
+                        {/* TODO: 暫時放住先 */}
+                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-2 
+                                       ${isRouteMatch('/') ? 'text-black border-b-red-500': 'border-b-transparent'}`}
+                            onClick={() => navigate('/profile')}>
+                            Profile
+                        </li>
                     </ul>
                 </div>
             </header>
