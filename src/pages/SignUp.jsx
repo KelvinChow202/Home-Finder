@@ -40,7 +40,7 @@ export default function SignUp() {
       // 將 user 放入數據庫
       await setDoc(doc(db, 'users', user.uid), formDataCopy)
       navigate('/')
-      toast.success(`Hi ${fullName}`)
+      toast.success(`Hi ${fullName}`, { autoClose: 500 })
     } catch (error) {
       console.log(error);
       const errorCode = error.code;

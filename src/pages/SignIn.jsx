@@ -10,7 +10,7 @@ export default function SignIn() {
     email: '',
     password: ''
   })
-  
+
   const { email, password } = formData
   const auth = getAuth()
   const navigate = useNavigate()
@@ -22,13 +22,13 @@ export default function SignIn() {
     }))
   }
 
-  async function onFormDataSubmit(e){
+  async function onFormDataSubmit(e) {
     e.preventDefault()
     try {
-      const userCredential = await signInWithEmailAndPassword(auth,email,password)
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
       const user = userCredential.user
       navigate('/')
-      toast.success(`Hi ${user.displayName}`)
+      toast.success(`Hi ${user.displayName}`, { autoClose: 500 })
     } catch (error) {
       console.log(error);
       const errorCode = error.code;
