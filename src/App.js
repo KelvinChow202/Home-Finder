@@ -9,6 +9,7 @@ import Header from './components/Header';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from './components/PrivateRoute';
+import Spinner from './components/Spinner';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/offers' element={<Offers />} />
+          <Route path='/spinner' element={<Spinner />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer

@@ -47,8 +47,13 @@ export default function Header() {
                         </li>
                         <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-2 
                                        ${(isRouteMatch('/sign-in') || isRouteMatch('/profile')) ? 'text-black border-b-red-500': 'border-b-transparent'}`}
-                            onClick={() => navigate(`/profile`)}>
+                            onClick={() => navigate('/profile')}>
                             {title}
+                        </li>
+                        <li className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-2 
+                                       ${isRouteMatch('/spinner') ? 'text-black border-b-red-500': 'border-b-transparent'}`}
+                            onClick={()=>navigate('/spinner')}>
+                            Spinner
                         </li>
                     </ul>
                 </div>
