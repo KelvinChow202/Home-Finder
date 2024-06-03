@@ -39,7 +39,7 @@ export default function CreateListing() {
     function onFormDataChange() { }
 
     return (
-        <main className='bg-orange-500 max-w-md mx-auto pb-10'>
+        <main className='max-w-md mx-auto pb-10'>
             <h1 className='text-center font-bold mt-6 text-3xl'>Create a Listing</h1>
             <form>
                 <div>
