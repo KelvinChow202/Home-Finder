@@ -27,7 +27,9 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/offers' element={<Offers />} />
           <Route path='/spinner' element={<Spinner />} />
-          <Route path='create-listing' element={<CreateListing />} />
+          <Route path='/create-listing' element={<PrivateRoute />}>
+            <Route path='/create-listing' element={<CreateListing />} />
+          </Route>
         </Routes>
       </BrowserRouter>
       <ToastContainer
@@ -41,7 +43,7 @@ function App() {
         draggable
         pauseOnHover
         theme="light"
-        transition={Slide}></ToastContainer>
+        transition={Slide} />
     </>
   );
 }
