@@ -1,19 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CreateListingButton from '../components/CreateListingButton'
 import Spinner from '../components/Spinner'
 import { toast } from 'react-toastify'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { getAuth } from 'firebase/auth'
 import { v4 as uuidv4 } from 'uuid'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 
-export default function CreateListing() {
+export default function EditListing() {
 
 
     const auth = getAuth()
+    const { currentUser } = auth
     const navigate = useNavigate()
+    const params = useParams()
+    const { listingId } = params
 
     const [geolocationEnabled, setGeolocationEnabled] = useState(true)
     const [loading, setLoading] = useState(false)
@@ -31,6 +34,49 @@ export default function CreateListing() {
     const [regularPrice, setRegularPrice] = useState(0)
     const [discountedPrice, setDiscountedPrice] = useState(0)
     const [images, setImages] = useState({})
+
+    const [oldListing, setOldListing] = useState()
+
+    // 每個人只可以改自己嘅post，其他人唔可以改
+    useEffect(() => {
+        if (oldListing && oldListing.userRef !== currentUser.uid) {
+            toast.error("You can't edit this listing");
+            navigate('/')
+        }
+    }, [currentUser.uid, navigate, oldListing])
+
+    useEffect(() => {
+        async function fetchListings() {
+            setLoading(true)
+            const docRef = doc(db, 'listings', listingId)
+            try {
+                const docSnap = await getDoc(docRef)
+                if (docSnap.exists()) {
+                    const { type, name, bedrooms, bathrooms, parking, furnish, address, description, offer, regularPrice, discountedPrice } = docSnap.data()
+                    setType(type)
+                    setName(name)
+                    setBedrooms(bedrooms)
+                    setBathrooms(bathrooms)
+                    setParking(parking)
+                    setFurnish(furnish)
+                    setAddress(address)
+                    setDescription(description)
+                    setOffer(offer)
+                    setRegularPrice(regularPrice)
+                    setDiscountedPrice(discountedPrice)
+                    setOldListing(docSnap.data())
+                } else {
+                    toast.warning('No such listing!')
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error('Fetching listings failed.')
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchListings()
+    }, [listingId])
 
 
     async function onFormDataSubmit(e) {
@@ -137,10 +183,12 @@ export default function CreateListing() {
         formData['geolocation'] = geolocation
 
         try {
-            const docRef = await addDoc(collection(db, "listings"), formData);
+            const docRef = doc(db, "listings", listingId);
+            await updateDoc(docRef, formData);
             setLoading(false)
-            toast.success('Listing created', {autoClose:1500})
-            navigate(`/category${formData.type}/${docRef.id}`)
+            toast.success('Listing edited', { autoClose: 1500 })
+            // navigate(`/category${formData.type}/${docRef.id}`)
+            navigate('/profile')
         } catch (error) {
             console.log(error);
             const errorCode = error.code;
@@ -195,7 +243,7 @@ export default function CreateListing() {
     if (loading) return <Spinner />
     return (
         <main className='max-w-md mx-auto pb-10'>
-            <h1 className='text-center font-bold mt-6 text-3xl'>Create a Listing</h1>
+            <h1 className='text-center font-bold mt-6 text-3xl'>Edit a Listing</h1>
             <form onSubmit={onFormDataSubmit}>
                 <div>
                     <p className='text-lg font-semibold mt-6'>Sale / Rent</p>
@@ -348,7 +396,7 @@ export default function CreateListing() {
                     type='submit'
                     className='w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-7 py-3 mt-8 lg:text-sm md:text-base sm:text-lg font-medium uppercase rounded-lg hover:shadow-xl transition ease-in-out duration-500 mb-6'
                 >
-                    Create Listing
+                    Edit Listing
                 </button>
             </form>
         </main>

@@ -1,11 +1,12 @@
 import { getAuth, updateProfile } from 'firebase/auth'
-import { doc, updateDoc } from 'firebase/firestore'
-import React, { useState } from 'react'
+import { collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { db } from '../firebase'
 import { toast } from 'react-toastify'
 import { FcHome } from "react-icons/fc"
 import { Link } from 'react-router-dom'
+import ListingItem from '../components/ListingItem'
 
 export default function Profile() {
 
@@ -20,7 +21,27 @@ export default function Profile() {
   const { name, email } = formData
 
   const [isChangedDetail, setIsChangedDetail] = useState(false)
+  const [listsings, setListings] = useState(null)
+  const [loading, setLoading] = useState(true)
 
+  useEffect(() => {
+    async function getListings() {
+      const collectionRef = collection(db, 'listings')
+      const q = query(collectionRef, where('userRef', '==', currentUser.uid), orderBy('timestamp', 'desc'))
+      const querySnapshot = await getDocs(q)
+      let listings = []
+      querySnapshot.forEach(snapShot => {
+        listings.push({
+          id: snapShot.id,
+          data: snapShot.data()
+        })
+      })
+      setListings(listings)
+      setLoading(false)
+      // console.log(listings);
+    }
+    getListings()
+  }, [currentUser.uid])
 
   function onFormDataChange(e) {
     setFormData(prevFormData => ({
@@ -48,6 +69,22 @@ export default function Profile() {
   function onLogout() {
     auth.signOut()
     navigate('/')
+  }
+
+  function onEditList(listingId) {
+    navigate(`/edit-listing/${listingId}`)
+  }
+
+  async function onDelList(listingId) {
+    if (window.confirm('Are you sure you want to delete?')) {
+      try {
+        await deleteDoc(doc(db, "listings", listingId))
+        const newListings = listsings.filter(item => item.id !== listingId)
+        setListings(newListings)
+      } catch (error) {
+        toast.error('Deleted failed')
+      }
+    }
   }
 
   return (
@@ -86,6 +123,16 @@ export default function Profile() {
           </button>
         </div>
       </section>
+      <div className='max-w-6xl mx-auto mt-6 bg-pink-300 mb-20'>
+        {!loading && listsings.length > 0 && (
+          <>
+            <h1 className='text-2xl text-center font-semibold'>My Listings</h1>
+            <ul className='sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mt-6 mb-6'>
+              {listsings.map(item => <ListingItem key={item.id} item={item.data} id={item.id} onEditList={onEditList} onDelList={onDelList} />)}
+            </ul>
+          </>
+        )}
+      </div>
     </>
   )
 }
