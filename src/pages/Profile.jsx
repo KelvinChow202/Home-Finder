@@ -89,9 +89,9 @@ export default function Profile() {
 
   return (
     <>
-      <section className='flex justify-center items-center flex-col max-w-6xl mx-auto bg-orange-500'>
+      <section className='flex justify-center items-center flex-col max-w-6xl mx-auto'>
         <h1 className='text-3xl text-center font-bold mt-6'>My Profile</h1>
-        <div className='w-full md:w-[50%] mt-6 px-3  bg-blue-400'>
+        <div className='w-full md:w-[50%] mt-6 px-3 '>
           <form className='space-y-10'>
             <input type='text' value={name} id='name' onChange={onFormDataChange} disabled={!isChangedDetail}
               className={`w-full px-4 py-3 border border-gray-300  ${isChangedDetail ? 'bg-red-200' : 'bg-white'} text-gray-700 text-xl rounded-lg transition ease-in-out`}
@@ -123,7 +123,7 @@ export default function Profile() {
           </button>
         </div>
       </section>
-      <div className='max-w-6xl mx-auto mt-6 bg-pink-300 mb-20'>
+      <div className='max-w-6xl mx-auto mt-6 mb-20'>
         {!loading && listsings.length > 0 && (
           <>
             <h1 className='text-2xl text-center font-semibold'>My Listings</h1>
