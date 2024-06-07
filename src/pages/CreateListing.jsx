@@ -140,7 +140,7 @@ export default function CreateListing() {
             const docRef = await addDoc(collection(db, "listings"), formData);
             setLoading(false)
             toast.success('Listing created', {autoClose:1500})
-            navigate(`/category${formData.type}/${docRef.id}`)
+            navigate(`/category/${formData.type}/${docRef.id}`)
         } catch (error) {
             console.log(error);
             const errorCode = error.code;

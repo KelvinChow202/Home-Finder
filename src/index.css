@@ -10,3 +10,12 @@ body{
 div,form {
     box-sizing: border-box;
 }
+
+.swiper-button-next::after,
+.swiper-button-prev::after{
+    color: #a8dadc;
+}
+
+.swiper-pagination-progressbar .swiper-pagination-progressbar-fill{
+    background-color: #a8dadc !important
+}
