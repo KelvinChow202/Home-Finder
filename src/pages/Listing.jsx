@@ -12,10 +12,6 @@ import {
     Pagination,
 } from "swiper/modules";
 import "swiper/css/bundle";
-// import 'swiper/css';
-// import 'swiper/css/navigation';
-// import 'swiper/css/pagination';
-// import 'swiper/css/effect-fade';
 import {
     FaShare,
     FaMapMarkerAlt,
@@ -31,8 +27,6 @@ export default function Listing() {
     const [loading, setLoading] = useState(true)
     const [listing, setListing] = useState(null)
     const params = useParams()
-
-    // SwiperCore.use([Autoplay, Navigation, Pagination])
 
     useEffect(() => {
         async function fetchListing() {
@@ -54,9 +48,9 @@ export default function Listing() {
         fetchListing()
     }, [params.listingId])
 
-    function copyLink(){
+    function copyLink() {
         navigator.clipboard.writeText(window.location.href)
-        toast.success('Link copied',{autoClose:500})
+        toast.success('Link copied', { autoClose: 500 })
     }
 
 
@@ -74,15 +68,76 @@ export default function Listing() {
                     listing.imageUrls.map((url, index) => (
                         <SwiperSlide key={index}>
                             <div className="flex justify-center items-center w-full h-[300px] overflow-hidden">
-                            <img src={url} className="h-auto w-full max-w-none" />
-                        </div>
+                                <img src={url} className="h-auto w-full max-w-none" />
+                            </div>
                         </SwiperSlide>
                     ))
                 }
             </Swiper>
             <div onClick={copyLink}
                 className='fixed top-[13%] right-[3%] z-10 bg-white cursor-pointer rounded-full border-2 border-gray-400 w-12 h-12 flex justify-center items-center'>
-                <FaShare className='text-lg text-slate-500'/>
+                <FaShare className='text-lg text-slate-500' />
+            </div>
+            <div className='bg-white max-w-6xl mx-auto h-[300px] flex flex-col md:flex-row mt-10 p-3 rounded-lg shadow-lg md:space-x-5 space-y-5 md:space-y-0'>
+                <div className='bg-pink-300 w-full h-full'>
+                    <p className='text-2xl font-bold mb-3 text-blue-900 truncate'>
+                        {listing.name} - ${' '}
+                        {
+                            listing.offer ? listing.discountedPrice.toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",") : listing.regularPrice.toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
+                        {
+                            listing.type == 'rent' ? ' / month' : ''
+                        }
+                    </p>
+                    <p className='flex items-center font-semibold mb-3'>
+                        <FaMapMarkerAlt className='mr-1 text-green-700' />
+                        {listing.address}
+                    </p>
+                    <div className='flex items-center space-x-4 w-[50%] mb-3'>
+                        <p className='bg-red-800 max-w-[50%] rounded-lg text-white p-1 text-sm font-semibold text-center'>
+                            For {listing.type === 'rent' ? 'Rent' : 'Sale'}
+                        </p>
+                        {
+                            listing.offer && <p className='bg-green-800 max-w-[50%] rounded-lg text-white p-1 text-sm text-center'>
+                                ${(listing.regularPrice - listing.discountedPrice)} discount
+                            </p>
+                        }
+                    </div>
+                    <p className='mb-3'>
+                        <span className='font-semibold'>Description </span>
+                        - {listing.description}
+                    </p>
+                    <div className='flex space-x-3 text-sm whitespace-nowrap truncate font-semibold'>
+                        <p className='flex items-center'>
+                            <FaBed className='mr-1 text-lg'/>
+                            {listing.bedrooms}
+                            {' '}
+                            {listing.bedrooms > 1 ? 'Beds' : 'Bed'}
+                        </p>
+                        <p className='flex items-center'>
+                            <FaBath className='mr-1 text-lg'/>
+                            {listing.bathrooms}
+                            {' '}
+                            {listing.bathrooms > 1 ? 'Baths' : 'Bath'}
+                        </p>
+                        <p className='flex items-center'>
+                            <FaParking className='mr-1 text-lg'/>
+                            {listing.parking}
+                            {' '}
+                            {listing.parking === true ? 'Parking Spot' : 'No Parking'}
+                        </p>
+                        <p className='flex items-center'>
+                            <FaChair className='mr-1 text-lg'/>
+                            {listing.furnish}
+                            {' '}
+                            {listing.furnish === true ? 'Furnished' : 'No furnished'}
+                        </p>
+                    </div>
+                </div>
+                {/* z-10 overflow-x-hidden */}
+                <div className='bg-blue-200 w-full h-full'></div>
             </div>
         </main>
     )
