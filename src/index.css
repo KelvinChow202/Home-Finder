@@ -11,11 +11,13 @@ div,form {
     box-sizing: border-box;
 }
 
+/* 修改箭嘴 */
 .swiper-button-next::after,
 .swiper-button-prev::after{
     color: #a8dadc;
 }
 
+/* 修改進度條顏色 */
 .swiper-pagination-progressbar .swiper-pagination-progressbar-fill{
     background-color: #a8dadc !important
 }

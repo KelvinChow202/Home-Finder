@@ -54,6 +54,12 @@ export default function Listing() {
         fetchListing()
     }, [params.listingId])
 
+    function copyLink(){
+        navigator.clipboard.writeText(window.location.href)
+        toast.success('Link copied',{autoClose:500})
+    }
+
+
     if (loading) return <Spinner />
     return (
         <main>
@@ -66,14 +72,6 @@ export default function Listing() {
                 autoplay={{ delay: 3000 }}>
                 {
                     listing.imageUrls.map((url, index) => (
-                        // <SwiperSlide key={index}>
-                        //     <img src={url} className='w-max-6xl h-[300px] mx-auto overflow-hidden' />
-                        // </SwiperSlide>
-                        // <SwiperSlide key={index}>
-                        //     <div className="flex justify-center items-center w-6/12 h-[300px] overflow-hidden mx-auto">
-                        //         <img src={url} className="object-cover" />
-                        //     </div>
-                        // </SwiperSlide>
                         <SwiperSlide key={index}>
                             <div className="flex justify-center items-center w-full h-[300px] overflow-hidden">
                             <img src={url} className="h-auto w-full max-w-none" />
@@ -82,6 +80,10 @@ export default function Listing() {
                     ))
                 }
             </Swiper>
+            <div onClick={copyLink}
+                className='fixed top-[13%] right-[3%] z-10 bg-white cursor-pointer rounded-full border-2 border-gray-400 w-12 h-12 flex justify-center items-center'>
+                <FaShare className='text-lg text-slate-500'/>
+            </div>
         </main>
     )
 }
