@@ -22,6 +22,7 @@ import {
 } from "react-icons/fa"
 import { getAuth } from 'firebase/auth'
 import Contact from '../components/Contact'
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 
 
 export default function Listing() {
@@ -83,7 +84,7 @@ export default function Listing() {
                 <FaShare className='text-lg text-slate-500' />
             </div>
             <div className='bg-white max-w-6xl mx-auto mb-28 pb-10 flex flex-col md:flex-row mt-10 p-3 rounded-lg shadow-lg md:space-x-5 space-y-5 md:space-y-0'>
-                <div className='bg-pink-300 w-full h-full'>
+                <div className='w-full'>
                     <p className='text-2xl font-bold mb-3 text-blue-900 truncate'>
                         {listing.name} - ${' '}
                         {
@@ -152,11 +153,22 @@ export default function Listing() {
                         )
                     }
                     {
-                        contactLandlord && <Contact userRef={listing.userRef} listing={listing}/>
+                        contactLandlord && <Contact userRef={listing.userRef} listing={listing} />
                     }
                 </div>
-                {/* z-10 overflow-x-hidden */}
-                <div className='bg-blue-200 w-full h-full'></div>
+                <div className='h-[200px] md:h-[400px] w-full'>
+                <MapContainer center={[listing.geolocation.lat,listing.geolocation.lng]} zoom={13} scrollWheelZoom={false} style={{height:'100%', width:'100%'}}>
+                        <TileLayer
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <Marker position={[listing.geolocation.lat,listing.geolocation.lng]}>
+                            <Popup>
+                                {listing.address}
+                            </Popup>
+                        </Marker>
+                    </MapContainer>
+                </div>
             </div>
         </main>
     )
