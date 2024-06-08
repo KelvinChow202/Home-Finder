@@ -23,7 +23,7 @@ export default function ListingItem(props) {
                 <div className='pl-1'>
                     <div className='w-full flex items-center space-x-1 mt-1'>
                         <IoLocationSharp className='h-4 w-4 text-green-600' />
-                        <p className='font-semibold text-gray-600 truncate max-w-[calc(100%-2rem)]'>{address}</p>
+                        <p className='font-semibold lg:text-sm md:text-base sm:text-lg text-gray-600 truncate max-w-[calc(100%-2rem)]'>{address}</p>
                     </div>
                     <p className='font-semibold mt-1 text-xl truncate'>{name}</p>
                     <p className='text-[#457b9d] font-semibold mt-1'>$ {item.offer ? discountedPrice.toString()

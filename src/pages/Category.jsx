@@ -4,8 +4,13 @@ import { collection, getDocs, limit, orderBy, query, startAfter, where } from 'f
 import { db } from '../firebase'
 import { toast } from 'react-toastify'
 import ListingItem from '../components/ListingItem'
+import { useParams } from 'react-router'
 
-export default function Offer() {
+export default function Category() {
+
+    const params = useParams()
+    const { categoryName } = params
+
     const [loading, setLoading] = useState(true)
     const [lastFectchedListing, setLastFectchedListing] = useState(null)
     const [listing, setListing] = useState(null)
@@ -13,7 +18,7 @@ export default function Offer() {
     useEffect(() => {
         async function fetchListings() {
             const q = query(collection(db, 'listings'),
-                where('offer', '==', true), limit(5), orderBy('timestamp', 'desc'))
+                where('type', '==', categoryName), limit(5), orderBy('timestamp', 'desc'))
             try {
                 const listings = []
                 const querySnapshot = await getDocs(q)
@@ -30,12 +35,12 @@ export default function Offer() {
             }
         }
         fetchListings()
-    }, [])
+    }, [categoryName])
 
     async function onFetchMoreListings() {
         setLoading(true)
         const q = query(collection(db, 'listings'),
-            where('offer', '==', true), limit(5), orderBy('timestamp', 'desc'), startAfter(lastFectchedListing))
+            where('type', '==', categoryName), limit(3), orderBy('timestamp', 'desc'), startAfter(lastFectchedListing))
         try {
             const listings = []
             const querySnapshot = await getDocs(q)
@@ -61,7 +66,9 @@ export default function Offer() {
 
     return (
         <div className='max-w-6xl mx-auto'>
-            <h1 className='font-bold mt-6 text-center text-3xl'>Offers</h1>
+            <h1 className='font-bold mt-6 text-center text-3xl'>
+                {categoryName === 'rent' ? 'Places For Rent' : 'Places For Sale'}
+            </h1>
             {loading ? <Spinner /> : listing && listing.length > 0 ? (
                 <main>
                     <ul className='grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
@@ -80,7 +87,9 @@ export default function Offer() {
                         </div>
                     }
                 </main>
-            ) : <p className='font-bold text-center text-5xl mt-20'>There are no current offers</p>}
+            ) : <p className='font-bold text-center text-5xl mt-20'>
+                There are no current {categoryName === 'rent' ? 'places for rent' : 'places for sale'}
+            </p>}
         </div>
     )
 }

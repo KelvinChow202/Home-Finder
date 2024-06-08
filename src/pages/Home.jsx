@@ -87,7 +87,7 @@ export default function Home() {
         <div className='mt-10'>
           <h2 className='ml-2 text-2xl font-semibold'>Sale offers</h2>
           <Link to='/category/sale' className='ml-2 text-sm text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out'>
-            Show more offers
+            Show more sale offers
           </Link>
           <ul className='grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
             {saleListings && saleListings.length>0 && (
@@ -98,7 +98,7 @@ export default function Home() {
         <div className='mt-10'>
           <h2 className='ml-2 text-2xl font-semibold'>Rent offers</h2>
           <Link to='/category/rent' className='ml-2 text-sm text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out'>
-            Show more offers
+            Show more rent offers
           </Link>
           <ul className='grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
             {rentListings && rentListings.length>0 && (
