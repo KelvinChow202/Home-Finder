@@ -68,7 +68,7 @@ export default function Listing() {
                 navigation
                 pagination={{ type: 'progressbar' }}
                 effect='fade'
-                autoplay={{ delay: 3000 }}>
+                autoplay={{ delay: 1300 }}>
                 {
                     listing.imageUrls.map((url, index) => (
                         <SwiperSlide key={index}>
