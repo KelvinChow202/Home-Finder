@@ -139,7 +139,7 @@ export default function CreateListing() {
         try {
             const docRef = await addDoc(collection(db, "listings"), formData);
             setLoading(false)
-            toast.success('Listing created', {autoClose:1500})
+            toast.success('Listing created', { autoClose: 1500 })
             navigate(`/category/${formData.type}/${docRef.id}`)
         } catch (error) {
             console.log(error);
@@ -322,7 +322,9 @@ export default function CreateListing() {
                                 focus:text-gray-700 focus:bg-white focus:border-slate-600
                                 transition ease-in-out duration-200'/>
                         {/* 只有 type === rent 嘅時候，先有 $ / month（幾錢一個月）*/}
-                        {type === 'rent' && <p className='ml-8 lg:text-sm md:text-base sm:text-lg whitespace-nowrap'>$ / month</p>}
+                        <p className='ml-8 lg:text-sm md:text-base sm:text-lg whitespace-nowrap'>
+                            ${type === 'rent' && ' / month'}
+                        </p>
                     </div>
 
                 </div>
@@ -334,12 +336,12 @@ export default function CreateListing() {
                             className='text-center rounded-lg py-3 lg:text-sm md:text-base sm:text-lg text-gray-700 bg-white border border-gray-300
                                 focus:text-gray-700 focus:bg-white focus:border-slate-600
                                 transition ease-in-out duration-200'/>
-                        <p className='ml-8 lg:text-sm md:text-base sm:text-lg whitespace-nowrap'>$ / month</p>
+                        <p className='ml-8 lg:text-sm md:text-base sm:text-lg whitespace-nowrap'>${type === 'rent' && ' / month'}</p>
                     </div>
                 </div>}
                 <div>
                     <p className='text-lg font-semibold mt-6'>Images</p>
-                    <p className='lg:text-sm md:text-base sm:text-lg text-red-500'>The first image will be the cover (max 6).</p>
+                    <p className='lg:text-sm md:text-base sm:text-lg text-red-500'>There are no more than 6 images.</p>
                     <input type='file' id='images' onChange={onImagesChange} accept='.jpg,.png,.jpeg' multiple required
                         className='text-gray-700 rounded-lg bg-white border border-gray-300 px-3 py-3 focus:text-gray-700 focus:bg-white focus:border-slate-600
                         transition ease-in-out duration-200'/>

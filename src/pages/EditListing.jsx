@@ -387,7 +387,7 @@ export default function EditListing() {
                 </div>}
                 <div>
                     <p className='text-lg font-semibold mt-6'>Images</p>
-                    <p className='lg:text-sm md:text-base sm:text-lg text-red-500'>The first image will be the cover (max 6).</p>
+                    <p className='lg:text-sm md:text-base sm:text-lg text-red-500'>There are no more than 6 images.</p>
                     <input type='file' id='images' onChange={onImagesChange} accept='.jpg,.png,.jpeg' multiple required
                         className='text-gray-700 rounded-lg bg-white border border-gray-300 px-3 py-3 focus:text-gray-700 focus:bg-white focus:border-slate-600
                         transition ease-in-out duration-200'/>

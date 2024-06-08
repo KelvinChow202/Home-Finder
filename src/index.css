@@ -21,3 +21,13 @@ div,form {
 .swiper-pagination-progressbar .swiper-pagination-progressbar-fill{
     background-color: #a8dadc !important
 }
+
+/* 喺 Google 瀏覽器剔除右邊嘅 滾動條 */
+html::-webkit-scrollbar{
+    display: none;
+}
+
+/* 喺 FireFox 瀏覽器剔除右邊嘅 滾動條 */
+html{
+    scrollbar-width: none;
+}
