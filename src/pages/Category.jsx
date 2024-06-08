@@ -78,7 +78,7 @@ export default function Category() {
                     </ul>
                     {
                         lastFectchedListing &&
-                        <div className='flex justify-center mt-6'>
+                        <div className='flex justify-center mt-6 mb-20'>
                             <button onClick={onFetchMoreListings}
                                 className='px-5 py-1.5 bg-white text-gray-700 border border-gray-300 
                             hover:border-slate-600 rounded-lg transition duration-200 ease-in-out'>
