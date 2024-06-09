@@ -16,6 +16,11 @@ export default function Category() {
     const [listing, setListing] = useState(null)
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
+    
+
+    useEffect(() => {
         async function fetchListings() {
             const q = query(collection(db, 'listings'),
                 where('type', '==', categoryName), limit(5), orderBy('timestamp', 'desc'))

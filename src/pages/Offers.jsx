@@ -11,6 +11,11 @@ export default function Offer() {
     const [listing, setListing] = useState(null)
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
+    
+
+    useEffect(() => {
         async function fetchListings() {
             const q = query(collection(db, 'listings'),
                 where('offer', '==', true), limit(5), orderBy('timestamp', 'desc'))
@@ -60,7 +65,7 @@ export default function Offer() {
     }
 
     return (
-        <div className='max-w-6xl mx-auto'>
+        <div className='max-w-6xl mx-auto pb-16'>
             <h1 className='font-bold mt-6 text-center text-3xl'>Offers</h1>
             {loading ? <Spinner /> : listing && listing.length > 0 ? (
                 <main>
@@ -71,7 +76,7 @@ export default function Offer() {
                     </ul>
                     {
                         lastFectchedListing &&
-                        <div className='flex justify-center mt-6 mb-20'>
+                        <div className='flex justify-center mt-6'>
                             <button onClick={onFetchMoreListings}
                                 className='px-5 py-1.5 bg-white text-gray-700 border border-gray-300 
                             hover:border-slate-600 rounded-lg transition duration-200 ease-in-out'>
